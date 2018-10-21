@@ -1,0 +1,7 @@
+{
+    "name": "a123/ip-ranger",
+    "type": "project",
+    "require": {
+        "phpunit/phpunit": "^7.4"
+    }
+}
