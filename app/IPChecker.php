@@ -25,14 +25,17 @@ class IPChecker
     /**
      * @param string $ip
      * @return string
+     * @throws \Exception
      */
     private function getPreparedIP(string $ip)
     {
         if ($this->isInt($ip)) {
             return long2ip((int)$ip);
-        } else {
+        } else if ($this->isDecimalIP($ip)) {
             return $ip;
         }
+
+        throw new \Exception('Invalid IP');
     }
 
     /**
@@ -74,7 +77,9 @@ class IPChecker
         if ($this->isCIDR($range)) {
             return $this->isIPInCIDR($ip, $range);
         } else if ($this->isInt($range)) {
-            return $ip == long2ip($range);
+            return $ip === long2ip($range);
+        } else if ($this->isDecimalIP($ip)) {
+            return $ip === $range;
         }
 
         throw new \Exception('Unknown range type');
@@ -118,5 +123,23 @@ class IPChecker
     private function isCIDR(string $value)
     {
         return strpos($value, '/') !== false;
+    }
+
+    /**
+     * @param string $value
+     * @return bool
+     */
+    private function isDecimalIP(string $value)
+    {
+        $valueRaw = explode('.', $value);
+        unset($value);
+
+        foreach ($valueRaw as $value) {
+            if (!$this->isInt($value)) {
+                return false;
+            }
+        }
+
+        return count($valueRaw) === 4;
     }
 }

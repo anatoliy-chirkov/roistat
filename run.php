@@ -7,15 +7,11 @@ use app\IPChecker;
 if (!in_array(PHP_SAPI, ['cli', 'cli-server'])) {
     echo "Error: This program only for console using \n";
     die;
-
-    //throw new \Exception('This program only for console using');
 }
 
 if ($argc < 3) {
     echo "Error: You need to define 2 arguments: ip, range \n";
     die;
-
-    //throw new \Exception('You need to define 2 arguments: ip range');
 }
 
 $ip = $argv[1];
